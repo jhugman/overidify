@@ -1,0 +1,24 @@
+{
+  "name": "overidify",
+  "version": "0.0.0",
+  "description": "A browserify transform that uses an overides directory for platform specific paramterized builds.",
+  "main": "index.js",
+  "scripts": {
+    "test": "tap test/"
+  },
+  "keywords": [
+    "browserify",
+    "mobile",
+    "transform",
+    "browserfy-transform"
+  ],
+  "author": "James Hugman",
+  "license": "Apache-v2",
+  "dependencies": {
+    "browserify-transform-tools": "~1.2.1",
+    "underscore": "~1.7.0"
+  },
+  "devDependencies": {
+    "tap": "~0.4.12"
+  }
+}
