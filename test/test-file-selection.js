@@ -332,7 +332,8 @@ test('Filtering a directory listing using a compound set of rules, with modifier
   var dirListing = [
      'a', 'a.android', 'a.webview',
      'b', 'b.stage', 'b.test', 
-     'c', 'c.android.stage', 'c.web', 'c.stage'
+     'c', 'c.android.stage', 'c.web', 'c.stage',
+     'f.js', 'f-generated.js',
   ];
   var file;
 
@@ -355,6 +356,21 @@ test('Filtering a directory listing using a compound set of rules, with modifier
       platform: 'ios',
       buildType: 'dev'
     }, config);
+  });
+
+  file = resolver.findBestFile('f-generated.js', dirListing, {
+    platform: 'ios',
+    buildType: 'stage'
+  }, config);
+  t.equal(file, 'f-generated.js');
+
+  t.throws(function () {
+    // we can't do this at this level.
+    file = resolver.findBestFile('f', dirListing, {
+      platform: 'ios',
+      buildType: 'stage'
+    }, config);
+    t.equal(file, 'f.js');
   });
 
   t.end();
