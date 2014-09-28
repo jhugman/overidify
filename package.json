@@ -1,6 +1,6 @@
 {
   "name": "overidify",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A browserify transform that uses an overides directory for platform specific paramterized builds.",
   "main": "index.js",
   "scripts": {
@@ -16,7 +16,8 @@
   "license": "Apache-v2",
   "dependencies": {
     "browserify-transform-tools": "~1.2.1",
-    "underscore": "~1.7.0"
+    "lodash": "~2.4.1",
+    "mime": "~1.2.11"
   },
   "devDependencies": {
     "tap": "~0.4.12"
