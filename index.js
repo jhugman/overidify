@@ -2,7 +2,7 @@
 var _ = require('underscore'),
     transformTools = require('browserify-transform-tools'),
     fileFinder = require('./lib/file-selection'),
-    defaultConfig = require('./lib/defaults'),
+    defaultConfig = require('./overidify-rules'),
     options = {
       platform: 'android',
       flavor: 'dev'
