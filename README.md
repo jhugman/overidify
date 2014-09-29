@@ -153,7 +153,7 @@ Adding a rule to the existing rules exposes a new way of slicing the filesystem.
   // …
     "js_env": {
       "android_pre42": ["android_pre42"],
-      "ie" : [ "ie" ]
+      "ie" : [ "ie" ],
       "modern": ["modern", "gecko", "chrome", "opera"],
       "nightly": ["nightly", "canary"],
       "canary": ["canary", "nightly"],
