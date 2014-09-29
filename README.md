@@ -176,8 +176,8 @@ Of course, new rules can apply to different implementations of a single feature.
 {
   // …
     "marketplace": [
-      ["playstore", "amazon", "yandex", "nomarket"],
-    },
+      "playstore", "amazon", "yandex", "nomarket",
+    ],
     // …
 }
 ```
