@@ -1,18 +1,24 @@
 overidify
 =========
 
-A browerify transform to auto-alias files based on filename modifiers and simple rules.
+A browerify transform to auto-alias files to using rules to simplify the making of build variants.
 
 Once in use, you can use build-time parameters to control how files are `require()`d.
 
 By default, the rules are quite mobile focused.
 
-This is particularly useful if you want to use browserify with packaged apps or hybrid apps.
+This is particularly useful if you want to use browserify to make platform specific builds for packaged apps or hybrid apps.
 
 Using overidify
 ---------------
 
-You can add `overidify` to your browserify object in `package.json`.
+You can install `overidify` to your project:
+
+```
+% npm install jhugman/overidify --save-dev
+```
+
+You can then add `overidify` to your browserify object in `package.json`.
 
 ```json
 {
@@ -36,7 +42,7 @@ lib/
  - environment-production.js
 ```
 
-Somewhere in the code, we may have:
+In this example, let's pretend we have the following lines somewhere in the code:
 
 ```javascript
 var renderer = require('./renderer'),
@@ -80,7 +86,7 @@ This is a module pointed to from the package.json, or can be specified inline:
   "browserify": {
     "transform": [ "overidify" ]
   },
-  overidify: {
+  "overidify": {
     "flavor": [
       "dev", "test", "stage", "production"
     ]
@@ -99,7 +105,7 @@ The value of `PLATFORM` is used to find a file with one of a list of suitable mo
   "browserify": {
     "transform": [ "overidify" ]
   },
-  overidify: {
+  "overidify": {
     "platform": {
       "ios": ["ios", "webview"],
       "android": ["android", "webview"]
@@ -131,11 +137,14 @@ Between different rules, the more rules matched wins:
 
 ```
 environment-ios-production.js
+environment-production.js
+environment-ios.js
 ```
-is only selected in the case of:
+In the case of:
 ```
 PLATFORM=ios FLAVOR=production browserify -o bundle.js lib/app.js
 ```
+the file selected will have both `ios` and `production` modifiers.
 
 ### Adding new rules
 Adding a rule to the existing rules exposes a new way of slicing the filesystem.
@@ -188,13 +197,52 @@ may select files:
 lib/
  - music-sync-playstore.js
  - music-sync-amazon.js
- - credentials-playstore.js
- - credentials-amazon.js
+ - credentials-playstore-dev.js
+ - credentials-playstore-production.js
+ - credentials-amazon-dev.js
+ - credentials-amazon-production.js
+```
+
+Now you can configure a feature based upon `FLAVOR` and `MARKETPLACE`:
+
+```
+FLAVOR=production MARKETPLACE=playstore browserify -o bundle.js lib/app.js
+```
+filters the filesystem to use just: 
+```
+lib/
+ - music-sync-playstore.js
+ - credentials-playstore-production.js
 ```
 
 Down in the weeds
 -----------------
+#### Recursion
+If you have multiple modules that need transforming, add overidify to each module in your build in the same way.
+
+The rules file applied to each of the sub-modules is the same for the top level build.
+
+#### Usage with grunt
+Because the configuration is done using `browserify`'s own mechanisms in `package.json`, and the variant is specified using environment variables, grunt can be used transparently:
+
+```
+PLATFORM=android FLAVOR=production grunt browserify:dist
+```
+
+Though I haven't tested it, I expect this would be the same for `gulp`.
+
+#### Environment variables
 How environment variable names are named can be changed with `OVERIDIFY_PREFIX`.
 ```
 OVERIDIFY_PREFIX=my myPLATFORM=android myFLAVOR=dev 
 ```
+
+
+Contributing
+------------
+ * Feedback especially on developer ergonomics
+ * Pull requests welcome.
+
+Licence
+-------
+Apache v2
