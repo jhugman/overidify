@@ -53,4 +53,6 @@ var transform = transformTools.makeRequireTransform("overidify",
     }
   });
 
+
+transform.resolve = fileFinder;
 module.exports = transform;
