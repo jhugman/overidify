@@ -237,6 +237,9 @@ How environment variable names are named can be changed with `OVERIDIFY_PREFIX`.
 OVERIDIFY_PREFIX=my myPLATFORM=android myFLAVOR=dev 
 ```
 
+Similar Projects
+----------------
+ * `[browserify-swap](https://github.com/thlorenz/browserify-swap)` - allows single enviroment variable to change multiple build regular expression rules specified in `package.json`.
 
 Contributing
 ------------
