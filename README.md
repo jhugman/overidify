@@ -40,9 +40,12 @@ lib/
  - logic.js
  - environment-dev.js
  - environment-production.js
+ - app.js
 ```
 
-In this example, let's pretend we have the following lines somewhere in the code:
+In practice, overidify imposes no additional constraints on project structure.
+
+In this example, let's pretend we have the following lines somewhere in the code of `app.js`:
 
 ```javascript
 var renderer = require('./renderer'),
@@ -155,9 +158,9 @@ Adding a rule to the existing rules exposes a new way of slicing the filesystem.
       "android_pre42": ["android_pre42"],
       "ie" : [ "ie" ],
       "modern": ["modern", "gecko", "chrome", "opera"],
-      "nightly": ["nightly", "canary"],
-      "canary": ["canary", "nightly"],
-      "headless": ["node", "meteor"]
+      "nightly": ["nightly", "gecko", "modern"],
+      "canary": ["canary", "chrome", "modern"],
+      "meteor": ["meteor"]
     },
     // …
 }
@@ -166,9 +169,11 @@ Now, for example, we can select how we store things, based on the file system:
 
 ```
 lib/
+ - storage-ie.js
  - storage-canary.js
  - storage-modern.js
  - storage.js
+ - app.js
 ```
 
 The command
@@ -179,6 +184,7 @@ would be use the `storage-modern.js` variant of `storage.js`.
 
 Note that running the files in situ with node will always select the `storage.js` variant.
 
+#### Building with features turned on an off.
 Of course, new rules can apply to different implementations of a single feature.
 
 ```json
@@ -197,6 +203,7 @@ may select files:
 lib/
  - music-sync-playstore.js
  - music-sync-amazon.js
+ - music-sync-nomarket.js
  - credentials-playstore-dev.js
  - credentials-playstore-production.js
  - credentials-amazon-dev.js
@@ -212,7 +219,28 @@ filters the filesystem to use just:
 ```
 lib/
  - music-sync-playstore.js
- - credentials-playstore-production.js
+ - marketplace-credentials-playstore-production.js
+```
+
+#### Themed builds
+The same technique can be used to define themes and feature sets to divide up the files:
+
+```json
+{
+  "overidify": {
+    // …
+    "tier": [ "paid", "iap", "ads", "free" ],
+    "ad_server": [ "google", "facebook", "mozilla" ],
+    "marketplace": [ "playstore", "amazon", "yandex", "mozilla", "nomarket" ]
+    // …
+  }
+}
+```
+
+So you can now build a given variant with a suitable grunt file:
+
+```
+TIER=iap MARKETPLACE=playstore PLATFORM=android grunt watch:mobile
 ```
 
 Down in the weeds
@@ -221,6 +249,8 @@ Down in the weeds
 If you have multiple modules that need transforming, add overidify to each module in your build in the same way.
 
 The rules file applied to each of the sub-modules is the same for the top level build.
+
+This allows code re-use, though reuse of rules.js is only achieved by copy/paste.
 
 #### Usage with grunt
 Because the configuration is done using `browserify`'s own mechanisms in `package.json`, and the variant is specified using environment variables, grunt can be used transparently:
@@ -239,7 +269,7 @@ OVERIDIFY_PREFIX=my myPLATFORM=android myFLAVOR=dev
 
 Similar Projects
 ----------------
- * `[browserify-swap](https://github.com/thlorenz/browserify-swap)` - allows single enviroment variable to change multiple build regular expression rules specified in `package.json`.
+ * `[browserify-swap](https://github.com/thlorenz/browserify-swap)` - allows single enviroment variable to change multiple build rules, based on regular expressions and filepaths specified in `package.json`.
 
 Contributing
 ------------
