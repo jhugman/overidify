@@ -20,7 +20,6 @@ function findOptions (config) {
 
     }
   });
-  console.log('Using: ' + JSON.stringify(options));
   return options;
 }
 
@@ -36,14 +35,13 @@ var transform = transformTools.makeRequireTransform("overidify",
   },
   function(args, opts, cb) {
     var requiredFile = args[0],
-        config = opts.config || defaultConfig;
+        config = opts.config || defaultConfig,
+        options = findOptions(config);
+    config = fileFinder.getRules(config);
     if (requiredFile[0] === '.') {
         var file;
         try {
-          file = fileFinder(opts.file, requiredFile, findOptions(config), config);
-          if (file !== requiredFile) {
-            console.log('Swapping ' + requiredFile + ' for ' + file);
-          }
+          file = fileFinder(opts.file, requiredFile, options, config);
           cb(null, "require('" + file + "')");
         } catch (e) {
           cb(e.message);
