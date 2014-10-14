@@ -3,23 +3,15 @@ var path = require('path'),
     _ = require('lodash'),
     transformTools = require('browserify-transform-tools'),
     fileFinder = require('./lib/file-selection'),
-    defaultConfig = require('./overidify-rules'),
+    defaultConfig = require('overidify-defaults'),
+    envOpt = require('env-opt'),
     options;
 
+
 function findOptions (config) {
-  if (options) {
-    return options;
+  if (!options) {
+    options = envOpt(_.keys(config), 'OVERIDIFY_PREFIX');
   }
-  options = {};
-  var prefix = process.env.OVERIDIFY_PREFIX || '';
-  _.each(config, function (i, key) {
-    var value = process.env[prefix + key.toUpperCase()];
-
-    if (value) {
-      options[key] = value;
-
-    }
-  });
   return options;
 }
 
@@ -37,7 +29,6 @@ var transform = transformTools.makeRequireTransform("overidify",
     var requiredFile = args[0],
         config = opts.config || defaultConfig,
         options = findOptions(config);
-    config = fileFinder.getRules(config);
     if (requiredFile[0] === '.') {
         var file;
         try {

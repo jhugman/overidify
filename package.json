@@ -18,7 +18,9 @@
     "browserify-transform-tools": "~1.2.1",
     "lodash": "~2.4.1",
     "mime": "~1.2.11",
-    "teeny-cache": "git://github.com/jhugman/teeny-cache"
+    "teeny-cache": "jhugman/teeny-cache",
+    "strings-with-facets": "jhugman/strings-with-facets",
+    "overidify-defaults": "git://github.com/jhugman/overidify-defaults"
   },
   "devDependencies": {
     "tap": "~0.4.12"
