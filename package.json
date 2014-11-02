@@ -20,7 +20,8 @@
     "mime": "~1.2.11",
     "teeny-cache": "jhugman/teeny-cache",
     "strings-with-facets": "jhugman/strings-with-facets",
-    "overidify-defaults": "git://github.com/jhugman/overidify-defaults"
+    "overidify-defaults": "jhugman/overidify-defaults",
+    "env-opt": "jhugman/node-env-opt"
   },
   "devDependencies": {
     "tap": "~0.4.12"
